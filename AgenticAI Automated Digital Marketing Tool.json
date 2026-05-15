@@ -1,0 +1,262 @@
+{
+  "name": "AgenticAI Automated Digital Marketing Tool",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4",
+          "mode": "list",
+          "cachedResultName": "GPT-4"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=DonateTags is an android based app. the solution involves the use o an android app by donors, and BLE enabled tags which are distributed to the needy. These tags act as location trackers, enabling donors to be able to access them via the app and be able to donate to nearby needy indviduals. Institutions do not require these tags, and they can simply register on our app as an institute, and by doing so they can raise donation requests or donors to be able to view and be able to donate to them.              \n  This is a short write-up of DonateTags. Write a 175 words SEO friendly blog on {{ $json.Topics }}  and try to involve DonateTags. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        448,
+        128
+      ],
+      "id": "5e7d9ccd-d68c-435f-ae80-776d4b18c159",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Z3YTRO7TVmhUbIZ5",
+          "name": "Workflow API 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "=https://docs.google.com/spreadsheets/d/1_P7IH7fBJ-6X-bbyZzWowzNVfWZwsMHEDhDD34hPx-0/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_P7IH7fBJ-6X-bbyZzWowzNVfWZwsMHEDhDD34hPx-0/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "Status",
+              "lookupValue": "UNUSED"
+            }
+          ]
+        },
+        "options": {
+          "returnFirstMatch": true
+        }
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "416230b4-3480-4c1d-9692-f72e4bdb758c",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qwMvvcJdIpvvaEGY",
+          "name": "DonateTags"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1_P7IH7fBJ-6X-bbyZzWowzNVfWZwsMHEDhDD34hPx-0",
+          "mode": "list",
+          "cachedResultName": "Blog Topics",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_P7IH7fBJ-6X-bbyZzWowzNVfWZwsMHEDhDD34hPx-0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_P7IH7fBJ-6X-bbyZzWowzNVfWZwsMHEDhDD34hPx-0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Topics": "={{ $json.Topics }}",
+            "Status": "USED"
+          },
+          "matchingColumns": [
+            "Topics"
+          ],
+          "schema": [
+            {
+              "id": "Topics",
+              "displayName": "Topics",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        -112
+      ],
+      "id": "f9f7a507-9105-41d6-9ada-90c9bb1d53d2",
+      "name": "Update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qwMvvcJdIpvvaEGY",
+          "name": "DonateTags"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "title": " ",
+        "additionalFields": {
+          "content": "={{ $json.message.content }}",
+          "status": "publish"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        848,
+        128
+      ],
+      "id": "dfa952e6-9355-4159-b607-af532bc61475",
+      "name": "Create a post",
+      "alwaysOutputData": true,
+      "credentials": {
+        "wordpressApi": {
+          "id": "NINHo1ifT6m6088G",
+          "name": "Wordpress account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -48,
+        0
+      ],
+      "id": "73bc05e6-5f2c-49fe-9463-be4cc9f2018e",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "3I2r9kr1LBeXoWxq"
+  },
+  "versionId": "f3f9b02c-a854-4ae8-a078-b50b3bd2daa7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6d11a559f23f823d308fe06f6cc1b7fa526acf00ae93b62ca7a95e0df4884612"
+  },
+  "id": "3I2r9kr1LBeXoWxq",
+  "tags": []
+}
